@@ -12,9 +12,9 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Basic
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
-import QtMultimedia 5.15
+import QtMultimedia
 
 Item {
     id: videoComponent
@@ -80,13 +80,14 @@ Item {
     }
 
     function playVideo() {
-        if (constants.verboseMode) console.debug("video status" + player.playbackState)
+        if (constants.verboseMode) console.debug("playbackState " + player.playbackState)
         if (player.playbackState == MediaPlayer.StoppedState) {
             player.playbackRate = 1
         }
 
         /* When video finished, unload video component, and reload main menu */
-        if (player.status == MediaPlayer.EndOfMedia ) {
+        if (constants.verboseMode) console.debug("player mediaStatus " + player.mediaStatus)
+        if (player.mediaStatus == MediaPlayer.EndOfMedia ) {
             /* reload current view */
             reloadCurrentView()
             /* Unload video view */
@@ -106,21 +107,28 @@ Item {
     MediaPlayer {
         id: player
         /* use HD stream with rescaling in case of full HD display to reduce footprint */
-        source: _videoPrefixCmd + _videoRootDir + sourceFile + _videoSuffixCmd
-        autoPlay: true
+        //source: _videoPrefixCmd + _videoRootDir + sourceFile + _videoSuffixCmd
+
+        // GSTREAMER issue on tracking
+        // FFMPEG workaround without HARDWARE ACCELLERATION
+        // To be used with QT_MEDIA_BACKEND=ffmpeg at runtime
+        source: "file://"+ _videoRootDir + sourceFile
         playbackRate: 1
-        onStatusChanged:
-        {
-            if (constants.verboseMode) console.debug("MediaPlayer source: " + player.source);
-            playVideo();
+        videoOutput: videoOutput
+        onMediaStatusChanged: {
+            playVideo()
+        }
+        Component.onCompleted: {
+            if (constants.verboseMode) console.debug(player.source)
+            player.play()
         }
     }
 
     VideoOutput {
+        id: videoOutput
         anchors.centerIn: parent
         anchors.fill: parent // will be played full screen if video resolution is smaller
         //fillMode: VideoOutput.Stretch
-        source: player
     }
 
     /* video buttons */
@@ -187,7 +195,7 @@ Item {
                     }
                     onReleased: {
                         player.playbackRate = 1
-                        player.seek(0)
+                        player.position = 0
                         player.play()             /* in case pause was done before */
                         playButton.checked = true /* trigger play event */
                     }
@@ -217,7 +225,7 @@ Item {
                     }
                     onReleased: {
                         player.playbackRate = 1
-                        player.seek(0)
+                        player.position = 0
                         player.play()             /* in case pause was done before */
                         playButton.checked = true /* trigger play event */
                     }

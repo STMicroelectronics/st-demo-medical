@@ -8,16 +8,15 @@
 # in the root directory of this software component.
 # If no LICENSE file comes with this software, it is provided AS-IS.
 #
-
-project(medical)
 cmake_minimum_required(VERSION 3.9)
+project(medical)
 
-find_package(Qt5Core CONFIG REQUIRED)
-find_package(Qt5Gui CONFIG REQUIRED)
-find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5Qml CONFIG REQUIRED)
-find_package(Qt5QmlModels CONFIG REQUIRED)
-find_package(Qt5Quick CONFIG REQUIRED)
+find_package(Qt6Core CONFIG REQUIRED)
+find_package(Qt6Gui CONFIG REQUIRED)
+find_package(Qt6Network CONFIG REQUIRED)
+find_package(Qt6Qml CONFIG REQUIRED)
+find_package(Qt6QmlModels CONFIG REQUIRED)
+find_package(Qt6Quick CONFIG REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC TRUE)
@@ -40,7 +39,7 @@ add_executable(medical
 )
 endif (UNIX)
 
-target_link_libraries(medical Qt5::Core Qt5::Gui Qt5::Quick)
+target_link_libraries(medical Qt6::Core Qt6::Gui Qt6::Quick)
 
 install(TARGETS medical RUNTIME DESTINATION bin)
 

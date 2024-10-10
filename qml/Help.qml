@@ -13,8 +13,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
-import QtMultimedia 5.15
 
 Item {
     id: root
@@ -138,7 +136,7 @@ Item {
         anchors { right: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         anchors.rightMargin: constants.getPixelSize(20)
         source: "/assets/BlowAir_%1/speak_call_help_normal.png".arg(constants.assetDir)
-        onSourceChanged: SequentialAnimation {
+        SequentialAnimation on source {
             NumberAnimation {
                 target: callHelp
                 property: "opacity"
@@ -172,7 +170,7 @@ Item {
         anchors { left: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         anchors.leftMargin: constants.getPixelSize(20)
         source: "/assets/BlowAir_%1/speak_get_aed_normal.png".arg(constants.assetDir)
-        onSourceChanged: SequentialAnimation {
+        SequentialAnimation on source {
             NumberAnimation {
                 target: getAed
                 property: "opacity"
