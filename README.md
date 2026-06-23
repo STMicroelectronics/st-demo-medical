@@ -14,3 +14,4 @@ Several animations, controls, graphical effects, and videos are used to demonstr
 The user needs to follow guidelines to reanimate the victim.<br>
 Auto-demo mode can be toggled on if needed.
 
+**Original author:** Philippe PAGE
